@@ -1,0 +1,414 @@
+<?xml version="1.0" standalone="no"?>
+<?xml-stylesheet type="text/css" href="style.css"?>
+<!-- svg 工具：http://www.cnblogs.com/timxgb/p/5176555.html
+	svg在线编辑器：https://c.runoob.com/more/svgeditor/
+	贝塞尔曲线生成器：http://jsrun.net/b6YKp/show
+	交互式坐标系统：https://www.sarasoueidan.com/demos/interactive-svg-coordinate-system/index.html -->
+<svg version="1.1"
+     baseProfile="full"
+     width="1800"
+     xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink"
+     >
+     <!-- 1、命名空间 
+用属性xmlns指定一般是一个命名空间url
+子元素可以定义自己的默认命名空间，
+为属性或元素标签指定，命名空间前缀。前缀需要绑定在默认命名空间上
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:svg="http://www.w3.org/2000/svg">
+  <body>
+    <h1>SVG embedded inline in XHTML</h1>
+    <svg:svg width="300px" height="200px">
+      <svg:circle cx="150" cy="100" r="50" fill="#ff0000"/>
+    </svg:svg>
+  </body>
+</html>
+脚本中有时候也需要指定命名空间
+-->
+<!-- 元素的渲染顺序，“后来居上”，越后面的元素越可见。 -->
+<!-- 在html中嵌入svg
+	<object data="image.svg" type="image/svg+xml" />
+	<iframe src="image.svg"></iframe> 
+	直接在HTML嵌入SVG代码
+	<a href="circle1.svg">View SVG file</a>
+-->
+<!-- 网格系统
+以页面的左上角为(0,0)坐标点，坐标以像素为单位
+viewBox属性定义了画布上可以显示的区域位置，以及显示区域的大小。缺省height 值，则默认为100%。
+在SVG中支持的长度单位有：em、ex、pt、px、、pc、cm、mm、in和百分比值。
+
+em：默认的字体大小，通常一个字符的高度
+ex：字符x的高度
+px：像素
+pt：点数，1/72英寸
+pc：Picas，1/6英寸
+cm：厘米
+mm：毫秒
+in：英寸
+ -->
+<!-- viewport和viewBox用于设置图像可见区域的大小。
+viewport视口的大小
+	使用width和height属性来指定viewport的尺寸；
+	viewBox来指定自己的用户坐标系统。它可以在viewport中完全可见或部分可见；
+viewBox 坐标系统 viewBox = <min-x> <min-y> <width> <height>  		
+
+	<min-x> <min-y> 为负数，向右下角偏移
+	如果你指定的用户坐标系统和viewport坐标系统的宽高比相同，它将会被拉伸填充满整个viewport区域。如果宽高比不相同，你可以使用preserveAspectRatio属性来指定这个坐标系在viewport中是否完全可见，同时也可以指定它在viewport坐标系统中的位置。
+ preserveAspectRatio 保持宽高比
+	 preserveAspectRatio = defer? <align> <meetOrSlice>?     
+	 defer参数是可选值，它仅仅在image元素上应用preserveAspectRatio属性时才使用。  
+	 align
+		xMin	viewBox的最小X值对齐viewport的左边部
+		xMid	viewBox的X轴中点对齐viewport的X轴中点
+		xMax	viewBox的最大X值对齐viewport的右边部
+		YMin	viewBox的最小Y值对齐viewport的顶边
+		YMid	viewBox的Y轴中点对齐viewport的Y轴中点
+		YMax	viewBox的最大Y值对齐viewport的底边  
+	 meetOrSlice
+		meet	保持宽高比并将viewBox缩放为适合viewport的大小
+		slice	保持宽高比并将所有不在viewport中的viewBox剪裁掉
+		none	不保存宽高比。缩放图像适合整个viewbox，可能会发生图像变形
+		meet viewbox是根据宽高比中值较小的那个值来进行缩放。比例小的那个占满整个viewport所以align可以是min mid max,效果都一样;
+		slice viewBox根据宽高比中值较大的值来进行缩放。
+SVG坐标系统
+
+  -->
+
+    <text x="0" y="0" font-size="60" text-anchor="middle" fill="black">SVG</text>
+<!-- 形状 -->
+  	<rect width="50" height="60" fill="red" x='10' y ='20' rx='20' ry ='3'/>
+
+  	<circle cx="90" cy="190" r="80" fill="yellow" />
+	<ellipse cx='100' cy = '450' rx='60' ry='100' stroke='red'></ellipse>
+	<line x1='100' y1='10' x2='200' y2='20' stroke='red'></line>
+	<polyline points='300 10, 320 20, 400 60,430 0,500 80' stroke='green' fill='white'></polyline>
+	<polygon points ='300 200, 400 150,450 50,500 150,600 200, 500 250,450 350, 400 250' fill='yellow'></polygon>
+
+<!-- 路径 path M xy/m dx dy 起始点 Z闭合命令 ,其他命令区分大小写，小写命令加相对距离参数-->
+	<!-- 直线 L x y H dx水平线  V dy垂直线-->
+		<path d='M 600 10 l 30 20 l 40 -20 Z' stroke='red' fill='white'></path>
+		<path d='M 600 10 h 40 v -10 Z' stroke='black' fill='white'></path>
+	<!-- 曲线
+		三次贝塞尔曲线 两个控制点和一个终点 C x1 y1,x2 y2, x y ,
+		S x2 y2, x y,接在C曲线后面，第一个点的控制点与前一个点的控制点一样，
+		二次贝塞尔曲线Q：Q x1 y1, x y 两个控制点的位置是一样的，
+		T x y 接在Q曲线后面-->
+
+		<path  id='path1' d="M 700 80 C 740 10, 765 10, 795 80 S 850 150, 880 80" stroke="red" fill="transparent"/>
+		<path d='M 700 180 C 650 140, 780 110, 800 150  S 900 180 ,1000 140' stroke='red' fill='white'></path>
+		<path d='M 700 280 Q 1300 200, 1400 280 T 1500 280' stroke='red' fill="transparent"></path>
+	<!-- 弧形 
+	A rx ry x-axis-rotation large-arc-flag (0表示小角度弧，1表示大角度弧 ) sweep-flag(弧线的方向，0表示从起点到终点沿逆时针画弧，1表示从起点到终点沿顺时针画弧。) x y
+ 	a rx ry x-axis-rotation large-arc-flag (0表示小角度弧，1表示大角度弧 ) sweep-flag(弧线的方向，0表示从起点到终点沿逆时针画弧，1表示从起点到终点沿顺时针画弧。) dx dy
+	-->
+		<path d='M 700 680 A 150 100 30 1 0 800 700' stroke='red' fill="transparent"></path>
+		<path d='M 700 680 A 150 100 30 0 0 800 700' stroke='#7E1919' fill="transparent"></path>
+		<path d='M 700 680 A 150 100 30 1 1 800 700' stroke='#0095FF' fill="transparent"></path>
+		<path d='M 700 680 A 150 100 30 0 1 800 700' stroke='#28078F' fill="transparent"></path>
+<!-- 填充和边框 -->
+	<!-- 上色  stroke="blue" fill="purple" fill-opacity="0.5" stroke-opacity="0.8"-->
+	<!-- 描边 宽度：stroke-width： ； 类型：stroke-linecap： butt square round ;连接处样式：stroke-linejoin:miter round bevel;虚线样式stroke-dasharray:x,x,x,...stroke-miterlimit,连接斜线长度。连接处的长度
+	fill-rule，nonzero evenodd用于定义如何给图形重叠的区域上色；还有stroke-dashoffset，定义虚线开始的位置。-->
+	<path d='M 1600 20 l 80 90 l 90 -50 z' stroke='#DB6F2B' fill='#91241A' fill-opacity='0.8' stroke-opacity='0.3' stroke-width='10' stroke-linecap='round' stroke-linejoin='round' stroke-dasharray='10,5,20'></path>
+	<!-- css上色和边框 -->
+	<defs>
+		<style type='text/css'><![CDATA[
+			.style1{
+				fill:#24C3D3;
+				stroke:#189B97;
+			}
+			.style1:hover{
+				fill-opacity:0.3;
+				stroke-opacity:0.3;
+			}
+		]]>
+		</style>
+	</defs>
+	<polygon points='1600 200,1700 300,1500,400' class='style1'></polygon>
+<!-- 渐变 
+	直线渐变和径向渐变，defs元素内部，创建一个<linearGradient> 节点。有id属性，直线渐变方向属性x1,y1,x2,y2（不能用负数,从0，0点开始），子节点stop有属性stop-color,stop-opacity,offset这些属性也可以用css指定。
+	径向渐变cx cy r,fx fy第一个点描述了渐变边缘位置，焦点则描述了渐变的中心
+	引用渐变，用fill stroke url(id)
+	spreadMethod： pad、reflect或repeat，Pad就是目前我们见到的效果，即当渐变到达终点时，最终的偏移颜色被用于填充对象剩下的空间。reflect会让渐变一直持续下去，不过它的效果是与渐变本身是相反的，以100%偏移位置的颜色开始，逐渐偏移到0%位置的颜色，然后再回到100%偏移位置的颜色。repeat也会让渐变继续，但是它不会像reflect那样反向渐变，而是跳回到最初的颜色然后继续渐变。
+	gradientUnits="'userSpaceOnUse' or 'objectBoundingBox'. 使用视图框或对象以确定相对位置的矢量点。 （默认为'objectBoundingBox）"-->
+	<defs>
+		<linearGradient id='linear1' x1='0' y1='0' x2='1' y2='1' spreadMethod="repeat">
+			<stop offset="0%" stop-color="#98E2A1"></stop>
+			<stop offset="20%" stop-color="#98E2A1"></stop>
+			<stop offset="20%" stop-color="#F22AAF"></stop>
+			<stop offset="30%" stop-color="#F22AAF"></stop>
+			<stop offset="100%" stop-color="#F6BA37"></stop>
+		</linearGradient>
+		<linearGradient id='linear2' x1='0' y1='0' x2='1' y2='2' spreadMethod="reflect">  
+			<stop class='stop1' offset='0%'></stop>
+			<stop class='stop2' offset='20%'></stop>
+			<stop class='stop3' offset='30%'></stop>
+			<stop class='stop4' offset='60%'></stop>
+			<stop class='stop5' offset='100%'></stop>
+		</linearGradient>
+		<radialGradient id='radial1' cx='0.5' cy='0.5' r='0.5' fx='0.25' fy='0.25' spreadMethod="reflect">
+			<stop offset="0%" stop-color="#98E2A1"></stop>
+			<stop offset="20%" stop-color="#98E2A1"></stop>
+			<stop offset="50%" stop-color="#F22AAF"></stop>
+			<stop offset="80%" stop-color="#F22AAF"></stop>
+			<stop offset="100%" stop-color="#F6BA37"></stop>
+		</radialGradient>
+		<radialGradient id='radial2' cx='0.5' cy='0.5' r='0.5' fx='0.25' fy='0.25' spreadMethod="reflect">  
+			<stop class='stop1' offset='0%'></stop>
+			<stop class='stop2' offset='50%'></stop>
+			<stop class='stop3' offset='70%'></stop>
+			<stop class='stop4' offset='80%'></stop>
+			<stop class='stop5' offset='100%'></stop>
+		</radialGradient>
+		<style type='text/css'><![CDATA[
+			.stop1{
+				stop-color:#ECF6F0;
+			}
+			.stop2{
+				stop-color:#9BF8C8;
+			}
+			.stop3{
+				stop-color:#1AA94E;
+			}
+			.stop4{
+				stop-color:#1A914C;
+			}
+			.stop5{
+				stop-color:#08521A;
+			}
+			]]>
+		</style>
+	</defs>
+	<polygon points='40 600, 200 650, 150 700' fill='url(#linear1)'></polygon>
+	<polyline points='20 800, 220 800,60 920,120 720,180 920,20 800' stroke='url(#linear2)' stroke-width='20' fill='transparent' stroke-linejoin='bevel'></polyline>
+	<polygon points='240 600, 400 650, 350 700' fill='url(#radial1)'></polygon>
+	<polyline  points='260 800, 460 800,300 920,360 720,420 920,260 800' stroke='url(#radial2)' stroke-width='20' fill='transparent' stroke-linejoin='bevel'></polyline>
+<!-- 图案 partten id, x,y,width,height,patternUnits(objectBoundingBox),patternContentUnits:userSpaceOnUse/objectBoundingBox
+patternUnits: 
+	userSpaceOnUse:    使用宽高值配置 		不会在每个指定区域内重新以区域左上角开始排序。userSpaceOnUse的pattern的起点坐标只有一个，就是其x和y表示的在svg画布坐标系中的位置。
+	objectBoundingBox: 与描绘区域绑定，使用百分比配置 总是以区域内得左上角为默认起始点
+patternContentUnits:
+	userSpaceOnUse:pattern内部元素的大小不会因为pattern的缩放而改变。userSpaceOnUse是patternContentUnits的默认属性值。
+	objectBoundingBox: pattern内部元素所有属性的数值都会根据设置的比例，乘以pattern的width或height计算出实际长度。pattern内部元素所有属性的数值如果后面不带百分号%，都乘上100作为百分比数。stroke-width:默认为1需要指定百分比值。
+viewBox:替代 objectBoundingBox 有viewBox属性，patternContentUnits属性将被忽略。
+preserveAspectRatio: -->
+	<defs>
+		<pattern x='0' y='0' width='0.25' height='0.25' id='pattern1' patternContentUnits='objectBoundingBox'>
+			<circle cx='0.125' cy='0.125' r='0.1' stroke-width='0.01' stroke='url(#linear1)' fill='transparent'></circle>
+			<polyline points='0 0.1, 0.25 0.1,0.03 0.25,0.125 0,0.19 0.25,0 0.1' stroke='url(#radial2)' stroke-width='0.01' fill='transparent' stroke-linejoin='bevel'></polyline>
+		</pattern>
+	</defs>
+	<rect x='1000' y='500' width='300' height='300' fill='url(#pattern1)' stroke='url(#linear2)'></rect>
+	<!-- 
+	<rect x='1600' y='500' width='300' height='300' fill='url(#pattern3)' stroke='url(#linear2)'></rect>
+	<rect x='1300' y='500' width='300' height='300' fill='url(#pattern2)' stroke='url(#linear2)'></rect> -->
+
+<!-- Texts  一种是写在图像中的文本，另一种是SVG字体-->
+<!-- 图像中的文本 
+text: x,y文字的y属性位于文字的下边，而不是上边。text-anchor:x对应文本得位置 start middle,end,font-family、font-style、font-weight、font-variant、font-stretch、font-size、font-size-adjust、kerning、letter-spacing、word-spacing和text-decoration：ltr和rtl
+tspan: x 数列，每个字符得位置 dx dy 字符偏移量 后续每一个偏移量加一 rotate 数列，每一个字符旋转角度 tref： 表示字符为可访问得链接 textLength ：字符得长度，长度不够调整字符展示适应宽度。
+font-family	设置字体
+font-size	设置文字大小
+kerning	设置字距调整的值
+letter-spacing	字母之间的间距
+word-spacing	单词之间的间距
+text-decoration	是否带下划线。可选值有：none、underline、overline和line-through
+stroke	文字的描边颜色。默认文字只有填充色，没有描边，添加描边将使文字变粗
+stroke-width	文字描边的宽度
+writing-mode:tb(to-bottom)垂直文字。
+glyph-orientation-vertical: 0用于旋转字符，默认为90度，兼容性
+fill	文字的填充色-->
+	 <text font-family='宋体' stroke='#2E4F8D' x='20' y='20' fill='black' font-size='14px'>
+	 	<tspan x='10,20,30,40' dx ='50' rotate='30,50,90,10' tref=''>hello,dsdiieoff</tspan>
+	 	<textPath xlink:herf='#path1'>hello, path text</textPath>
+	 </text>
+<!--  <defs>元素用于预定义一个元素使其能够在SVG图像中重复使用。 使用<use>元素来引入它们-->
+	<defs>
+	    <g id="shape"><!-- group -->
+	        <rect x="50" y="50" width="50" height="50" />
+	        <circle cx="50" cy="50" r="50" />
+	    </g>
+	  </defs>
+	 
+	  <use xlink:href="#shape" x="50" y="50" />
+	  <use xlink:href="#shape" x="200" y="50" /> 
+<!--<symbol>元素用于定义可重复使用的符号。
+preserveAspectRatio和viewBox属性
+<g>元素不能拥有这些属性。-->
+ 	<symbol id="shape2">
+        <circle cx="25" cy="25" r="25" style="fill:#bf55ec;"/>
+    </symbol>
+ 
+    <use xlink:href="#shape2" x="50" y="25" />
+<!-- <use>元素可以在SVG图像中多次重用一个预定义的SVG图形 -->
+
+<!---transform属性： SVG元素转换  旋转，位移，倾斜-->
+	<!-- matrix(<a> <b> <c> <d> <e> <f>) 矩阵转换-->     
+	<!-- translate(<tx> [<ty>]) 位移 不需要使用单位。它们的单位使用的是用户坐标系统的单位-->      
+	<rect x='1260' y='50' width='30' height='40' stroke='#853B3B' stroke-width='2' fill='#F15C5C' transform='translate(30,20)'></rect>  
+	<!-- scale(<sx> [<sy>]) 缩放-->   
+	<circle cx='1280' cy='80' r='40'  stroke='#853B3B' stroke-width='2' fill='#F15C5C' transform='scale(0.5,1.5)'></circle>
+	<!-- skewX(<skew-angle>) skewY(<skew-angle>) 倾斜 skewX函数指定元素绕X旋转，skewY函数指定元素绕Y轴旋转。 一个无单位的角度值--> 
+	<ellipse cx='1200' cy='100' rx='30' ry='40'  stroke='#853B3B' stroke-width='2' fill='#F15C5C' transform='skewX(50)'></ellipse>
+	<!-- rotate(<rotate-angle> [<cx> <cy>]) 旋转 一个无单位的角度值 没有提供cx和cy值，那么旋转的中心点位于当前用户坐标系统的原点。 顺时针旋转-->
+	 <line x1='1150' y1='120' x2='1180' y2='150' stroke='#853B3B' stroke-width='2' fill='#F15C5C' transform='rotate(20 1160 120)'></line>
+<!-- 动画元素  IE浏览器和Opera Mini浏览器不支持 
+	公共动画元素的属性：
+		通过xlink:href指定动画目标 没有为动画元素指定xlink:href属性，那么动画的目标元素就是当前动画元素的直接父元素。
+		attributeName只有一个值，因此，你每次只能执行一个属性动画。如果你想执行多个属性动画，需要为元素指定多个动画。
+		使用attributeType属性来为属性指定名称空间。例如可以设置为“CSS”，意思是这些属性可以在CSS中找到
+		from，to和dur (时长)属性 
+		begin (click;click+1s;2s;0s;动画id.begin(end) + 2s;时钟值，兼容性差；circ-anim.repeat(2)) 
+		fill属性  freeze：动画效果被冻结在最后一个值。 remove：动画效果会在活动周期结束之后被移除。
+		restart属性可以防止动画在激活之后被重新开始执行。
+			always：动画可以在任何时候被重置。这是默认值。
+			whenNotActive：只有在动画没有被激活的时候才能被重置。例如在动画结束之后。
+			never：在整个SVG执行的过程中，元素动画不能被重置。
+		repeatCount来重复动画次数,indefinite无限次
+		repeatDur：重复动画的时间
+		keyTimes和values来控制动画帧：values="50; 490; 350; 450" keyTimes="0; 0.5; 0.8; 1"
+	animate 指定时间内动画的标量
+	set 指定时间之后执行的动画
+	animateMotion 沿指定路径的移动元素 
+		mpath：可以和animateMotion元素结合来引用一条路径作为运动路径
+		keypoints：属性。作为animateMotion元素的一个属性来控制路径动画的动画速度
+		rotate：属性。作为animateMotion元素的一个属性用于控制路径动画中元素是否自动根据其X轴切线方向来改变运动方向。
+	animateColor 指定时间内颜色的变化 //已过时
+	animateTransform：允许你在指定时间内对某个SVG transformation 属性执行动画，
+-->
+	<!--<animate> -->
+		<circle cx='1020' cy='120' r='30' fill='#FCCB6A' id='aniCir'></circle>
+		<animate 
+			xlink:href='#aniCir' 
+			begin='click' 
+			attributeName='cx' 
+			id='aniX' 
+			from='1020' 
+			to='1200' 
+			dur='5s' 
+			fill='remove'
+			restart='whenNotActive'
+			rpeatCount='3'
+			repeatDur='12s'
+			keyTimes='0;0.2;0.3;0.7;1'
+			values='1020;1130;1150;1180;1200'
+			></animate>
+		<animate 
+			xlink:href='#aniCir' 
+			begin='aniX.begin + 2s' 
+			attributeName='fill' 
+			from='#FCCB6A' 
+			to='#B17F1A' 
+			dur='5s' 
+			fill='remove'
+			restart='whenNotActive'
+			rpeatCount='3'
+			repeatDur='12s'
+			keyTimes='0;0.3;0.7;0.8;1'
+			values='#FCCB6A;#E5B031;#C99518;#AD891D;#B17F1A'
+			></animate>
+		<!--控制动画的easing效果：calcMode和keySplines  整个动画指定一个全局的easing效果，你仍然需要使用keyTimes属性来指定动画帧，但是只需要指定开始和结束的动画帧：0和1，不需要指定中间的值。
+			calcMode属性来指定动画片段效果linear,
+				discrete(时间段间无过度)，
+				paced 忽略keyTimes，计算各个值之间的距离，并根据相应的时间来创建整个动画的平均速度（颜色或者简单的数字/长度值。）
+				spline 允许你改变两个值之间的动画过渡效果的速度 
+			keySplines指定贝塞尔曲线值对应keyTimes得对应时间点。
+		-->
+		<animate 
+			xlink:href='#aniCir' 
+			begin='aniX.begin + 2s' 
+			attributeName='fill' 
+			from='#FCCB6A' 
+			to='#B17F1A' 
+			dur='5s' 
+			fill='remove'
+			restart='whenNotActive'
+			rpeatCount='3'
+			repeatDur='12s'
+			keyTimes='0;0.3;0.7;0.8;1'
+			values='#FCCB6A;#E5B031;#C99518;#AD891D;#B17F1A'
+			calcMode='paced'
+			></animate>
+		<circle id='jumpCir' cx='1000' cy='300' r='10' fill='#5965CC'></circle>
+		<animate
+			xlink:href='#jumpCir'
+			begin='click + 2s'
+			attributeName='cy'
+			from='300'
+			to='300'
+			dur='3s'
+			keyTimes='0;0.3;0.5;0.7;1'
+			values='300;340;360;340;300'
+			repeatCount='indefinite'
+			keySplines='.42 0 1 1;
+	                0 0 .59 1;
+	                .42 0 1 1;
+	                0 0 .59 1;
+	                .42 0 1 1;'>
+		</animate>
+		<animate
+			xlink:href='#jumpCir'
+			begin='click + 2s'
+			attributeName='cx'
+			from='1000'
+			to='1000'
+			dur='3s'
+			keyTimes='0;0.3;0.5;0.7;1'
+			values='1000;1010;1020;1010;1000'
+			repeatCount='indefinite'
+			keySplines='.42 0 1 1;
+	                0 0 .59 1;
+	                .42 0 1 1;
+	                0 0 .59 1;
+	                .42 0 1 1;'>
+		</animate>
+		<!-- additive  sum时,（from to）相对原始值得位置。replace(默认值),替换from to得值。
+		accumulate 重复动画时,是否从当前位置开始。默认值是none；sum，那么它的下一次动画将从上一次动画结束的地方开始执行
+		end属性：与begin类似，规定动画得结束时间，绝对或相对时间，重复值，事件值  
+		begin和end属性都可以接收一组用分号隔开的值	使用多个Begin和End值来 定义动画间隔 设置了repeatCount为indefinite，它也会被end属性覆盖，不会无限循环
+
+		-->
+	<!--<animateMotion> 路径动画是指一个元素沿着指定的路径运动。  
+		接收的属性和<animate>元素相同;还有它们的calcMode属性有所不同：<animateMotion>元素的calcMode属性的默认值是paced，而不是linear
+		覆盖的规则如下：
+			对于定义一个运动路径，mpath元素会覆盖path属性，也会覆盖values属性，还会覆盖from，by和to属性。
+			对于确定的点对应的keytimes属性，keytimes属性会覆盖path，还会覆盖from，by和to属性。-->
+		<!-- keyPoints，rotate和path。
+		path属性的坐标系统是相对于元素当前位置的。 
+		<mpath>元素来引用一条外部的路径。-->
+		<circle id='pathCir' cx='700' cy='180' r='10' fill='#F236E9'></circle>
+		<animateMotion 
+			xlink:href='#pathCir'
+			begin='click'
+			dur='5s'
+			path='M 0 0 C -50 -40, 80 -70, 100 -30  S 200 0 ,300 -70'
+			fill='freeze'
+			></animateMotion>
+		
+		<path id='mpath' d='M700,420c9,-65 76,-76 110,-80c34,-4 117,7 132,11c15,4 76,27 74,76c-2,49 -70,77 -83,78c-13,1 -112,3 -141,-3c-29,-6 -101,-17 -92,-82z' fill='transparent' stroke='#67202A'></path>
+		<circle id='mpathCir' cx='0' cy='0' r='10' fill='#F236E9'></circle>
+		<animateMotion xlink:href='#mpathCir' begin='0s' dur='5s' fill='remove' repeatCount='indefinite'>
+			<mpath xlink:href='#mpath'></mpath>
+		</animateMotion>
+		<!-- rotate属性有三个参数：
+			auto：元素自动根据运动路径的角度（曲线的切线方向）来改变它的运动方向。
+			auto-reverse：这是auto在曲线的切线方向上的镜像。
+			一个数值：目标元素具有一个恒定的运动角度，这个角度由指定的数值决定。 -->
+		<g id="car" transform=" scale(1,-1) translate(-234.4, -182.8)" fill="rgba(20,30,40,.5)">
+	      <path d="M234.4,182.8c-3.5,0-6.4,2.9-6.4,6.4c0,3.5,2.9,6.4,6.4,6.4c3.5,0,6.4-2.9,6.4-6.4C240.8,185.6,238,182.8,234.4,182.8z"/>
+	      <circle cx="234.4" cy="189.2" r="2.8"/>
+	      <path d="M263,182.8c-3.5,0-6.4,2.9-6.4,6.4c0,3.5,2.9,6.4,6.4,6.4c3.5,0,6.4-2.9,6.4-6.4C269.4,185.6,266.6,182.8,263,182.8z"/>
+	      <circle cx="263" cy="189.2" r="2.8"/>
+	      <path d="M275,171.4c-2.8-0.7-5.2-3-6.3-5.1l-3.9-7.4c-1.1-2.1-3.9-3.8-6.3-3.8h-22.6c-2.4,0-5,1.8-5.7,4.1l-2.4,7
+	          c-0.2,0.9-1.8,5.5-5,5.5c-2.4,0-5,3.1-5,5.5v8.2c0,2.4,1.9,4.3,4.3,4.3h4.5c0-0.2,0-0.3,0-0.5c0-4.3,3.5-7.8,7.8-7.8
+	          c4.3,0,7.8,3.5,7.8,7.8c0,0.2,0,0.3,0,0.5h13.1c0-0.2,0-0.3,0-0.5c0-4.3,3.5-7.8,7.8-7.8s7.8,3.5,7.8,7.8c0,0.2,0,0.3,0,0.5h8.1
+	          c2.4,0,4.3-1.9,4.3-4.3v-6.5C283.2,172,277.3,172,275,171.4z"/>
+	      <path d="M241.8,170.3h-12.5c0.7-1.1,1.1-2.2,1.2-2.6l2-5.9c0.6-1.9,2.8-3.5,4.8-3.5h4.5V170.3z"/>
+	      <path d="M246.1,170.3v-12h10.4c2,0,4.4,1.5,5.3,3.3l3.3,6.3c0.4,0.8,1.1,1.7,2,2.4H246.1z"/>
+	  </g>
+
+	  	<animateMotion xlink:href='#car' begin='0s' dur='5s' fill='remove' repeatCount='indefinite' rotate='auto'>
+			<mpath xlink:href='#mpath'></mpath>
+		</animateMotion>
+</svg>
+
